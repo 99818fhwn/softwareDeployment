@@ -1,0 +1,1 @@
+az group deployment create --resource-group resourcegroup1 --template-file arm-tem.json --parameters arm-tem.parameters.json
