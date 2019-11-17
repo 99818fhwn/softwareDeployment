@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+   maindb:
+     image: mymysql
+     restart: always
+     ports:
+        - "8888:3306"
+     volumes:
+        - type: volume
+          source: dbdata
+          target: /var/lib/mysql
+     restart: always
+     environment:
+      DB_USER: main
+      DB_PASSWORD: password
+      DB_NAME: maindb
+        
+
+   wordpress:
+     depends_on:
+       - maindb
+     image: mywordpress
+     ports:
+       - "80:80"
+     volumes:
+       - type: volume
+         source: wpconfig
+         target: /etc/wordpress/
+       - type: volume
+         source: wpuploads
+         target: /var/www/html/wp-content/uploads/
+     restart: always
+     environment:
+      DB_USER: main
+      DB_PASSWORD: password
+      DB_NAME: maindb
+      DB_HOST: maindb:3306
+
+volumes:
+  dbdata:
+  wpconfig:
+  wpuploads:
